@@ -17,20 +17,21 @@ private:
     static const unsigned int NUMBER_FONTSETS = 80;
     static const unsigned int STARTING_ADDRESS = 0x200;
     static const unsigned int STARTING_ADDRESS_FONTSET = 0x50;
+    static const uint32_t SCREEN_PIXEL_CONSTANT = 0xFFFFFFFF;
     
     static const unsigned int SIZE_TABLE = 0x10;
     static const unsigned int SIZE_TABLE0x0 = 0xF;
     static const unsigned int SIZE_TABLE0x8 = 0xF;
     static const unsigned int SIZE_TABLE0xE = 0xF;
     static const unsigned int SIZE_TABLE0xF = 0x100;
-
+    
     static const unsigned int RAM_SIZE = 0x1000; // 4096
     static const unsigned int STACK_SIZE = 0x10; // 16
     static const unsigned int REGISTERS_SIZE = 0x10; // 16
     static const unsigned int KEYBOARD_SIZE = 0x10; // 16
     
     static const unsigned int SCREEN_SIZE = 64 * 32;
-
+    
 private:
     // FIXME: TODO: Refactor register to also have addressRegister
     uint8_t registers[REGISTERS_SIZE];
@@ -46,26 +47,26 @@ private:
     // FIXME: TODO: Change name below
     uint8_t delayTimer = INIT_VALUE;
     uint8_t soundTimer = INIT_VALUE;
-        
+    
     typedef void (CPU::*OpcodeFunction)();
-//    OpcodeFunction* table;
-//    OpcodeFunction* table0x0;
-//    OpcodeFunction* table0x8;
-//    OpcodeFunction* table0xE;
-//    OpcodeFunction* table0xF;
-
+    //    OpcodeFunction* table;
+    //    OpcodeFunction* table0x0;
+    //    OpcodeFunction* table0x8;
+    //    OpcodeFunction* table0xE;
+    //    OpcodeFunction* table0xF;
+    
     OpcodeFunction table[SIZE_TABLE];
     OpcodeFunction table0x0[SIZE_TABLE0x0];
     OpcodeFunction table0x8[SIZE_TABLE0x8];
     OpcodeFunction table0xE[SIZE_TABLE0xE];
     OpcodeFunction table0xF[SIZE_TABLE0xF];
-
-//    table = new OpcodeFunction[SIZE_TABLE];
-//    table0x0 = new OpcodeFunction[SIZE_TABLE0x0];
-//    table0x8 = new OpcodeFunction[SIZE_TABLE0x8];
-//    table0xE = new OpcodeFunction[SIZE_TABLE0xE];
-//    table0xF = new OpcodeFunction[SIZE_TABLE0xF];
-
+    
+    //    table = new OpcodeFunction[SIZE_TABLE];
+    //    table0x0 = new OpcodeFunction[SIZE_TABLE0x0];
+    //    table0x8 = new OpcodeFunction[SIZE_TABLE0x8];
+    //    table0xE = new OpcodeFunction[SIZE_TABLE0xE];
+    //    table0xF = new OpcodeFunction[SIZE_TABLE0xF];
+    
 public:
     uint8_t keyboard[KEYBOARD_SIZE];
     uint32_t screen[SCREEN_SIZE];
@@ -75,13 +76,13 @@ public:
     ~CPU();
     void loadROM(const char* filename);
     void runCycle();
-
+    
 private:
     
     // FIXME: TODO Write random generator
     void randomGenerator();
     std::default_random_engine randomEngine;
-	std::uniform_int_distribution<uint8_t> distribution;
+    std::uniform_int_distribution<uint8_t> distribution;
     
     void initNopes();
     void initOpcodeTables();
@@ -139,17 +140,23 @@ private:
     // FIXME: TODO: Refactor below
     
     void accessTable0x0();
-	void accessTable0x8();
-	void accessTable0xE();
-	void accessTable0xF();
+    void accessTable0x8();
+    void accessTable0xE();
+    void accessTable0xF();
     void opcodeNOPE();
     
-    // FIXME: TODO: Refactor above
     // =========================================================================
     // =========================================================================
     // =========================================================================
     
+    void executeOpcode00EStar();
+    void executeOpcodeEXStarStar();
+    void executeOpcode0x8StarStarStar();
+    void opcodeFXStarStar();
+    
     void executeInstruction();
+    
+    void printErrorOnOpcode();
 };
 
 #endif /* cpu_hpp */
