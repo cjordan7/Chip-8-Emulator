@@ -60,13 +60,7 @@ private:
     OpcodeFunction table0x8[SIZE_TABLE0x8];
     OpcodeFunction table0xE[SIZE_TABLE0xE];
     OpcodeFunction table0xF[SIZE_TABLE0xF];
-    
-    //    table = new OpcodeFunction[SIZE_TABLE];
-    //    table0x0 = new OpcodeFunction[SIZE_TABLE0x0];
-    //    table0x8 = new OpcodeFunction[SIZE_TABLE0x8];
-    //    table0xE = new OpcodeFunction[SIZE_TABLE0xE];
-    //    table0xF = new OpcodeFunction[SIZE_TABLE0xF];
-    
+
 public:
     uint8_t keyboard[KEYBOARD_SIZE];
     uint32_t screen[SCREEN_SIZE];

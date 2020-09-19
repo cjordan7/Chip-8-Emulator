@@ -51,13 +51,13 @@ CPU::CPU(): randomEngine(std::chrono::system_clock::now().time_since_epoch().cou
     memset(screen, INIT_VALUE, sizeof(screen));
     
     memcpy(&ram[STARTING_ADDRESS_FONTSET], GRAPHICS, NUMBER_FONTSETS);
-    
-    //    table = new OpcodeFunction[SIZE_TABLE];
-    //    table0x0 = new OpcodeFunction[SIZE_TABLE0x0];
-    //    table0x8 = new OpcodeFunction[SIZE_TABLE0x8];
-    //    table0xE = new OpcodeFunction[SIZE_TABLE0xE];
-    //    table0xF = new OpcodeFunction[SIZE_TABLE0xF];
-    
+
+    // table = new OpcodeFunction[SIZE_TABLE];
+    // table0x0 = new OpcodeFunction[SIZE_TABLE0x0];
+    // table0x8 = new OpcodeFunction[SIZE_TABLE0x8];
+    // table0xE = new OpcodeFunction[SIZE_TABLE0xE];
+    // table0xF = new OpcodeFunction[SIZE_TABLE0xF];
+
     initNopes();
     initOpcodeTables();
 }
@@ -356,7 +356,6 @@ void CPU::opcode9xy0() {
     }
 }
 
-////#define I 8u
 void CPU::opcodeAnnn() {
     PRINT_DEBUG("opcode Annn");
     
@@ -377,31 +376,25 @@ void CPU::opcodeCxkk() {
 
 void CPU::opcodeDxyn() {
     PRINT_DEBUG("opcode Dxyn");
-    
-    uint8_t Vx = x();
-    uint8_t Vy = y();
-    
-    uint8_t height = n();
-    
-    // Wrap if going beyond screen boundaries
-    uint8_t xPosition = registers[Vx] % VIDEO_WIDTH;
-    uint8_t yPosition = registers[Vy] % VIDEO_HEIGHT;
+
+    uint8_t xP = registers[x()] % VIDEO_WIDTH;
+    uint8_t yP = registers[y()] % VIDEO_HEIGHT;
     
     registers[0xF] = 0;
     
-    for (unsigned int row = 0; row < height; ++row) {
-        uint8_t spriteByte = ram[I + row];
+    for(int i = 0; i < n(); ++i) {
+        uint8_t sprite = ram[I + i];
         
-        for (unsigned int col = 0; col < 8; ++col) {
-            uint8_t spritePixel = spriteByte & (0x80 >> col);
-            uint32_t* screenPixel = &screen[(yPosition + row) * VIDEO_WIDTH + (xPosition + col)];
+        for(int j = 0; j < 8; ++j) {
+            uint8_t pixel = sprite & (0x80 >> j);
+            uint32_t* pixelPtr = &screen[(yP + i) * VIDEO_WIDTH + (xP + j)];
             
-            if (spritePixel) {
-                if (*screenPixel == SCREEN_PIXEL_CONSTANT) {
+            if (pixel) {
+                if (*pixelPtr == SCREEN_PIXEL_CONSTANT) {
                     registers[0xF] = 1;
                 }
                 
-                *screenPixel ^= SCREEN_PIXEL_CONSTANT;
+                *pixelPtr ^= SCREEN_PIXEL_CONSTANT;
             }
         }
     }
@@ -588,7 +581,8 @@ void CPU::executeOpcode0x8StarStarStar() {
     }
 }
 
-// TODO: Maybe use a function for chosing between one or the other
+// TODO: Maybe use a function for chosing between
+/// one or the other (executeInstruction or opcodeTable)
 void CPU::executeInstruction() {
     switch(opcode & 0xF000) {
         case 0x0000:
