@@ -3,6 +3,32 @@
 
 I wrote a Chip-8 emulator
 
+## Installation
+
+First, clone the repository, then create a build directory and call `cmake`.
+
+Or in other words, run the following lines in your favorite terminal:
+
+```
+$ git clone https://github.com/cjordan7/Chip-8-Emulator.git
+$ cd path/to/clone/chip8/
+$ mkdir build
+$ cd build/
+$ cmake ..
+```
+
+
+## Use
+
+After building the interpreter, launch it with a *bf program*:
+
+```
+cd path/to/clone/chip8/build/
+$ ./bfInterpreter path/to/chip8.ch8
+```
+
+
+
 
 ## Keyboard mapping
 
