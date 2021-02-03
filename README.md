@@ -20,7 +20,7 @@ $ cmake ..
 
 ## Use
 
-After building the interpreter, launch it with a *bf program*:
+After building the emulator, launch it with a *ch8 rom*:
 
 ```
 cd path/to/clone/chip8/build/
