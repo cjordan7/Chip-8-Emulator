@@ -6,9 +6,15 @@ I wrote a Chip-8 emulator
 
 ## Keyboard mapping
 
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
 Original Chip8 Keyboard
 
-| :---: | :---: | :---: |
+| ---: | :---: | :---: |
 | 1   | 2   | 3   | 4   |
 | 4   | 5   | 6   | D   |
 | 7   | 8   | 9   | E   |
