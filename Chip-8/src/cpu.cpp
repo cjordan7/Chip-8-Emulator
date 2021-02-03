@@ -4,7 +4,7 @@
 #include <iomanip>
 #include "cpu.hpp"
 
-//#define DEBUGGING
+// #define DEBUGGING
 
 #ifdef DEBUGGING
 #define PRINT_DEBUG(a) std::cerr << a << std::endl;
@@ -72,13 +72,12 @@ CPU::~CPU() {
 
 void CPU::loadROM(const char* filename) {
     std::ifstream rom(filename, std::ios::binary | std::ios::ate);
-    
+
     if(rom.is_open()) {
         // FIXME: TODO: TODO Refactor
         std::streampos tempSize = rom.tellg();
         
         char* temp = new char[tempSize];
-        
         rom.seekg(0, std::ios::beg);
         rom.read(temp, tempSize);
         rom.close();
@@ -87,7 +86,7 @@ void CPU::loadROM(const char* filename) {
         
         delete[] temp;
     } else {
-        std::runtime_error("ROM Doesn't Exist !");
+        throw std::runtime_error("ROM Doesn't Exist !");
     }
 }
 
@@ -484,10 +483,11 @@ void CPU::opcodeFx65() {
 
 void CPU::printErrorOnOpcode() {
     std::cerr << "Undefined opcode: " << std::hex << opcode << std::endl;
-    std::runtime_error("");
+    throw std::runtime_error("");
 }
 
 void CPU::executeOpcode00EStar() {
+    PRINT_DEBUG("opcode 00EStar");
     switch(opcode & 0x000F) {
         case 0x0000:
             opcode00E0();
@@ -501,6 +501,7 @@ void CPU::executeOpcode00EStar() {
 }
 
 void CPU::executeOpcodeEXStarStar() {
+    PRINT_DEBUG("opcode 00EXStarStar");
     switch(opcode & 0x00FF) {
         case 0x009E:
             opcodeEx9E();
@@ -514,6 +515,7 @@ void CPU::executeOpcodeEXStarStar() {
 }
 
 void CPU::opcodeFXStarStar() {
+    PRINT_DEBUG("opcode FXStarStar");
     switch(opcode & 0x00FF) {
         case 0x0007:
             opcodeFx07();
@@ -548,6 +550,7 @@ void CPU::opcodeFXStarStar() {
 }
 
 void CPU::executeOpcode0x8StarStarStar() {
+    PRINT_DEBUG("opcode 0x8StarStarStar");
     switch(opcode & 0x000F) {
         case 0x0000:
             opcode8xy0();
@@ -584,6 +587,7 @@ void CPU::executeOpcode0x8StarStarStar() {
 // TODO: Maybe use a function for chosing between
 /// one or the other (executeInstruction or opcodeTable)
 void CPU::executeInstruction() {
+    PRINT_DEBUG("Execute Instruction");
     switch(opcode & 0xF000) {
         case 0x0000:
             // Opcode: 00E*
@@ -643,6 +647,7 @@ void CPU::executeInstruction() {
 }
 
 void CPU::runCycle() {
+    PRINT_DEBUG("Run Cycle");
     opcode = (ram[pc] << 8u) | ram[pc + 1];
     pc += 2;
 

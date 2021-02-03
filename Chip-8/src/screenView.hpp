@@ -10,7 +10,7 @@
 #define ScreenView_hpp
 
 #include <iostream>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string>
 
 struct SDLWindowSpecification {
