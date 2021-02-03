@@ -5,24 +5,19 @@ I wrote a Chip-8 emulator
 
 
 ## Keyboard mapping
-|               |                 |        |
-| ------------- | :-------------: | -----: |
-| col 3 is      | right-aligned   | $1600  |
-| col 2 is      | centered        | $12    |
-| zebra stripes | are neat        | $1     |
 
 
 Original Chip8 Keyboard
-
-| ---: | :---: | :---: |
-| 1   | 2   | 3   | 4   |
-| 4   | 5   | 6   | D   |
-| 7   | 8   | 9   | E   |
-| A   | 0   | B   | F   |
+|      |       |       |   |
+| ---: | :---: | :---: |   |
+| 1    | 2     | 3     | 4 |
+| 4    | 5     | 6     | D |
+| 7    | 8     | 9     | E |
+| A    | 0     | B     | F |
 
 
 This is the new keyboard:
-
+|     |     |     |     |
 | --- | --- | --- | --- |
 | 1   | 2   | 3   | 4   |
 | Q   | W   | E   | R   |
