@@ -24,10 +24,8 @@ After building the emulator, launch it with a *ch8 rom*:
 
 ```
 cd path/to/clone/chip8/build/
-$ ./bfInterpreter path/to/chip8.ch8
+$ ./chip8 path/to/chip8.ch8
 ```
-
-
 
 
 ## Keyboard mapping
