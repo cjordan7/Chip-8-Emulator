@@ -1,8 +1,19 @@
+//
+//  Chip-8
+//
+//  Created by Cosme Jordan on 12.09.20.
+//  Copyright © 2020 Cosme Jordan. All rights reserved.
+//
 
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
+#include <SDL.h>
+#include <SDL_audio.h>
+
 #include "cpu.hpp"
+#include "sound.hpp"
 
 // #define DEBUGGING
 
@@ -15,7 +26,6 @@
 #define VIDEO_HEIGHT 32
 #define VIDEO_WIDTH 64
 
-// FIXME: TODO: Change random generator
 #include <chrono>
 #include <random>
 
@@ -60,6 +70,9 @@ CPU::CPU(): randomEngine(std::chrono::system_clock::now().time_since_epoch().cou
 
     initNopes();
     initOpcodeTables();
+
+    SDL_Init(SDL_INIT_AUDIO);
+
 }
 
 CPU::~CPU() {
@@ -91,9 +104,9 @@ void CPU::loadROM(const char* filename) {
 }
 
 void CPU::initNopes() {
-    // FIXME: TODO Use a function for this ??
     std::fill_n(table, SIZE_TABLE, &CPU::opcodeNOPE);
     std::fill_n(table0x0, SIZE_TABLE0x0, &CPU::opcodeNOPE);
+
     /// Strange bug: 0xE+0x1: Invalid suffix '+0x1' on integer constant,
     /// but with 0xF+0x1, it works...
     std::fill_n(table0x8, SIZE_TABLE0x8, &CPU::opcodeNOPE);
@@ -145,6 +158,7 @@ void CPU::initOpcodeTables() {
     table0xF[0x55] = &CPU::opcodeFx55;
     table0xF[0x65] = &CPU::opcodeFx65;
 }
+
 // =============================================================================
 // =============================================================================
 // =============================================================================
@@ -224,7 +238,6 @@ void CPU::opcode00E0() {
 void CPU::opcode00EE() {
     PRINT_DEBUG("opcode 00EE");
     
-    //--sp;
     pc = stack[--sp];
 }
 
@@ -652,13 +665,13 @@ void CPU::runCycle() {
     pc += 2;
 
     // executeInstruction();
+    PRINT_DEBUG("Execute Instruction");
     (this->*table[(opcode & 0x0F000u) >> 12u])();
+    PRINT_DEBUG("Finished executing Instruction");
     
-    if (soundTimer > 0) {
-        // TODO: TEst: line before the if
-        /// --soundTimer;
+    if(soundTimer > 0) {
         if(soundTimer == 1) {
-            // TODO: Sound... use beep, use SDL
+            simpleSound.play(FREQUENCY, SOUND_DURATION);
         }
 
         --soundTimer;
@@ -668,3 +681,4 @@ void CPU::runCycle() {
         --delayTimer;
     }
 }
+

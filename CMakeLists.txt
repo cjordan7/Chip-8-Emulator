@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-set(SOURCES src/main.cpp src/cpu.cpp src/screenView.cpp)
+set(SOURCES src/main.cpp src/cpu.cpp src/screenView.cpp src/sound.cpp)
 
 add_executable(chip8 ${SOURCES})
 target_link_libraries(chip8 PRIVATE SDL2::SDL2)

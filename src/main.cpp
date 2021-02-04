@@ -1,3 +1,9 @@
+//
+//  Chip-8
+//
+//  Created by Cosme Jordan on 12.09.20.
+//  Copyright © 2020 Cosme Jordan. All rights reserved.
+//
 
 #include <iostream>
 
@@ -6,10 +12,6 @@
 
 const unsigned int VIDEO_HEIGHT = 32;
 const unsigned int VIDEO_WIDTH = 64;
-
-// FIXME: TODO: Refactor using OpenGl
-// FIXME: TODO: COMMENTS
-// FIXME: TODO: Use constants everywhere
 
 /// Keyboard is mapped as followed
 /// Original Chip8 keyboard -> Chip8 Emulator Keyboard
@@ -24,6 +26,7 @@ const unsigned int VIDEO_WIDTH = 64;
 void checkExtension(char const* filename) {
     std::string temp(filename);
     std::cout << temp << std::endl;
+
     if(temp.substr(temp.find_last_of(".") + 1) != "ch8") {
         std::cerr << "=======================================================" << std::endl;
         std::cerr << "=======================================================" << std::endl;
@@ -35,20 +38,17 @@ void checkExtension(char const* filename) {
 }
 
 int main(int argc, char* argv[]) {
-    // FIXME: TODO: Use function, move to class Chip8Controller,
-    /// and call functions
-
     if (argc != 4) {
         std::cerr << "Usage: "
                   << argv[0]
                   << " ScaleNumber DelayNumber PathToROM"
                   << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
- 
-	int videoScale = std::stoi(argv[1]);
-	int cycleDelay = std::stoi(argv[2]);
-	char const* romFilename = argv[3];
+        std::exit(EXIT_FAILURE);
+    }
+
+    int videoScale = std::stoi(argv[1]);
+    int cycleDelay = std::stoi(argv[2]);
+    char const* romFilename = argv[3];
 
     checkExtension(romFilename);
     SDLWindowSpecification sdlWindowSpecification;
@@ -61,27 +61,27 @@ int main(int argc, char* argv[]) {
     ScreenView screenView(sdlWindowSpecification);
     screenView.initSDL();
 
-	CPU* chip8 = new CPU();
-	chip8->loadROM(romFilename);
+    CPU* chip8 = new CPU();
+    chip8->loadROM(romFilename);
+    
+    int pitch = sizeof(chip8->screen[0]) * VIDEO_WIDTH;
+    
+    auto lastCycleTime = std::chrono::high_resolution_clock::now();
+    bool quit = false;
 
-	int pitch = sizeof(chip8->screen[0]) * VIDEO_WIDTH;
+    while (!quit) {
+        quit = screenView.inputKeys(chip8->keyboard);
+        
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
 
-	auto lastCycleTime = std::chrono::high_resolution_clock::now();
-	bool quit = false;
+        if (dt > cycleDelay) {
+            lastCycleTime = currentTime;
 
-	while (!quit) {
-		quit = screenView.inputKeys(chip8->keyboard);
-
-		auto currentTime = std::chrono::high_resolution_clock::now();
-		float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
-
-		if (dt > cycleDelay) {
-			lastCycleTime = currentTime;
-
-			chip8->runCycle();
+            chip8->runCycle();
             screenView.draw(chip8->screen, pitch);
-		}
-	}
+        }
+    }
  
     screenView.destorySDL();
     delete chip8;

@@ -1,3 +1,9 @@
+//
+//  Chip-8
+//
+//  Created by Cosme Jordan on 12.09.20.
+//  Copyright © 2020 Cosme Jordan. All rights reserved.
+//
 
 #ifndef cpu_hpp
 #define cpu_hpp
@@ -8,6 +14,8 @@
 
 #include <chrono>
 #include <random>
+
+#include "sound.hpp"
 
 #define INIT_VALUE 0
 
@@ -61,6 +69,14 @@ private:
     OpcodeFunction table0xE[SIZE_TABLE0xE];
     OpcodeFunction table0xF[SIZE_TABLE0xF];
 
+
+    static const int SOUND_DURATION = 50;
+    static constexpr double FREQUENCY = 440;
+
+    SimpleSound simpleSound;
+    
+    //    void audio_callback(void *_beeper, Uint8 *_stream, int _length);
+    
 public:
     uint8_t keyboard[KEYBOARD_SIZE];
     uint32_t screen[SCREEN_SIZE];
