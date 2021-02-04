@@ -23,7 +23,7 @@ $ cmake ..
 After building the emulator, launch it with a *ch8 rom*:
 
 ```
-cd path/to/clone/chip8/build/
+$ cd path/to/clone/chip8/build/
 $ ./chip8 path/to/chip8.ch8
 ```
 
