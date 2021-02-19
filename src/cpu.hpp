@@ -41,7 +41,6 @@ private:
     static const unsigned int SCREEN_SIZE = 64 * 32;
     
 private:
-    // FIXME: TODO: Refactor register to also have addressRegister
     uint8_t registers[REGISTERS_SIZE];
     uint8_t ram[RAM_SIZE];
     uint16_t stack[STACK_SIZE];
@@ -52,7 +51,6 @@ private:
     uint16_t pc = INIT_VALUE;
     uint8_t sp = INIT_VALUE;
     
-    // FIXME: TODO: Change name below
     uint8_t delayTimer = INIT_VALUE;
     uint8_t soundTimer = INIT_VALUE;
     
@@ -75,8 +73,6 @@ private:
 
     SimpleSound simpleSound;
     
-    //    void audio_callback(void *_beeper, Uint8 *_stream, int _length);
-    
 public:
     uint8_t keyboard[KEYBOARD_SIZE];
     uint32_t screen[SCREEN_SIZE];
@@ -89,7 +85,6 @@ public:
     
 private:
     
-    // FIXME: TODO Write random generator
     void randomGenerator();
     std::default_random_engine randomEngine;
     std::uniform_int_distribution<uint8_t> distribution;
@@ -97,7 +92,6 @@ private:
     void initNopes();
     void initOpcodeTables();
     
-    // FIXME: TODO Opcodes
     void opcode0nnn();
     void opcode00E0();
     void opcode00EE();
@@ -147,7 +141,6 @@ private:
     // =========================================================================
     // =========================================================================
     // =========================================================================
-    // FIXME: TODO: Refactor below
     
     void accessTable0x0();
     void accessTable0x8();
